@@ -13,24 +13,24 @@ body {
 }
 
 .nav-link {
-    padding: 0%;
     color: #09174A;
     font-weight: 500;
     font-size: 14px;
 }
 
-.border-bottom {
-    color: #E3E3E3;
+.List {
+    border-bottom-style: solid;
+    border-color: #0C39C7 !important;
 }
 
 .form-select {
     padding:7px;
+    background-color: rgba(163, 163, 163, 0.1);
 }
 
 .btn {
     font-weight: 500;
     font-size: 16px;
-
 }
 
 .btn-primary {
@@ -38,8 +38,14 @@ body {
 }
 
 .btn-outline-primary {
-  color: #0C39C7;
-  border-color: #0C39C7;
+    color: #0C39C7;
+    border-color: #0C39C7;
+    --bs-btn-hover-color:#0C39C7;
+    --bs-btn-hover-bg: none;
+    --bs-btn-hover-border-color: #0C39C7;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #0C39C7;
+    --bs-btn-active-border-color: #0d6efd;
 }
 
 .task-item {
@@ -68,14 +74,15 @@ body {
     box-shadow: none;
 }
 
-.content {
-    display: block;
+.sortby {
+  font-weight: 600;
+  font-size: 14px;
+  color: #09174A;
 }
 
-.titleBox {
-  display: flex;
-  align-items: center;
-  gap:10px;
+.modal-title, .delete-body {
+  color: #09174A;
+
 }
 
 .status {
@@ -83,6 +90,12 @@ body {
   height: .7rem;
   border-radius: 50%;
   background: #EBB705;
+}
+
+.dateAndTime {
+  font-weight: 500;
+  font-size: 15px;
+  color: #888888;
 }
 
 .edit {
@@ -93,11 +106,14 @@ body {
   cursor: pointer;
 }
 
-.bi-trash {
-  color: red;
+.bi-pencil{
+  color: #7E7E7F;
+
 }
 
-
+.bi-trash {
+  color: #D04444;
+}
 
 .text20 {
     font-weight: 600;
@@ -107,5 +123,10 @@ body {
 .text16 {
     font-weight: 500;
     font-size: 16px;
+}
+
+.text18 {
+    font-weight: 600;
+    font-size: 18px;
 }
 

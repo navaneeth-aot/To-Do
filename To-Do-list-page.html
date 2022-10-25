@@ -12,32 +12,31 @@
       integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="To-Do-list-page.css" />
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"
     />
+    <link rel="stylesheet" href="To-Do-list-page.css" />
   </head>
   <body>
     <div class="container">
       <nav class="navbar navbar-expand-lg sticky-top bg-white">
         <div class="navbar-brand text20 mt-5 pb-4" href="#">My Tasks</div>
-        <div class="container-fluid d-flex ps-0 border-bottom pb-1">
+        <div class="container-fluid border-1 d-flex border-bottom">
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav gap-5">
-              <li class="">
-                <a class="nav-link align-self-center" aria-current="page" href="#" id="All" onclick="loadAll()">All (<span id="allCount"></span>)</a>
-                
+            <ul class="navbar-nav gap-3">
+              <li class="border-bottom border-4 " id="listAll">
+                <a class="nav-link py-3" aria-current="page" href="#" id="All" onclick="loadAll()">All (<span id="allCount"></span>)</a>
               </li>
-              <li class="">
-                <a class="nav-link" href="#" id="Active" onclick="loadActive()">Active (<span id="activeCount"></span>)</a>
+              <li class="border-bottom border-4" id="listActive">
+                <a class="nav-link py-3" href="#" id="Active" onclick="loadActive()">Active (<span id="activeCount"></span>)</a>
               </li>
-              <li class="">
-                <a class="nav-link" href="#" id="Completed" onclick="loadCompleted()">Completed (<span id="completedCount"></span>)</a>
+              <li class="border-bottom border-4" id="listComplete">
+                <a class="nav-link py-3" href="#" id="Completed" onclick="loadCompleted()">Completed (<span id="completedCount"></span>)</a>
               </li>
             </ul>
           </div>
-          <div class="d-flex gap-3 align-content-start">
+          <div class="d-flex gap-3 align-content-start pb-2">
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
               Add New Task
             </button>
@@ -55,8 +54,8 @@
         </div>
 
         <div class="col-md-2 col-lg-3 d-flex gap-3 align-items-center">
-          <a class="text-nowrap text-decoration-none">Sort by:</a>
-          <select class="form-select" aria-label="Default select example">
+          <a class="text-nowrap text-decoration-none sortby">Sort by:</a>
+          <select class="form-select border-0" aria-label="Default select example">
             <option value="1">By Title</option>
             <option value="2">By Due date</option>
           </select>
@@ -144,21 +143,19 @@
         </div>
       </div>
     </div>
-  
-
 
 
     <!-- delete Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog"> 
         <div class="modal-content">
-          <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close ms-auto mt-3 me-3" data-bs-dismiss="modal" aria-label="Close"></button>
           <div class="modal-header border-0 pt-4 d-flex justify-content-center">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+            <h1 class="modal-title fs-5 text18" id="exampleModalLabel">Delete Task</h1>
             
           </div>
           <div class="modal-body d-flex justify-content-center">
-            <p>Are you sure you want to delete this task?</p>
+            <p class="delete-body text16">Are you sure you want to delete this task?</p>
           </div>
           <div class="modal-footer border-0 pb-5 d-flex justify-content-center gap-3">
             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>

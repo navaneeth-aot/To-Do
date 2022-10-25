@@ -14,12 +14,15 @@ let value;
 let indexForEdit;
 let searchTeXt;
 let foundIndex;
+let currentDate;
 
 let str = localStorage.getItem("array");
 // convert string to valid object
-let activeArray = JSON.parse(str);
+let activeArray = JSON.parse(str) || [];
 
 onload();
+//getDate();
+
 
 addButton.addEventListener("click",() => {
     readData();
@@ -34,7 +37,7 @@ document.querySelector(".form-select").addEventListener("change", function() {
         createTask();
         createCompleteTask();
 
-    }else{
+    }else {
        sortByDate(activeArray , 'date');
        createTask();
        createCompleteTask()
@@ -54,10 +57,10 @@ function onload() {
 }
 
 function loadAll() {
-    // document.getElementById("activeContainerHeading").style.display=""
-    // document.getElementById("active").style.display=""
-    // document.getElementById("completedContainerHeading").style.display=""
-    // document.getElementById("completed").style.display=""
+    document.getElementById("activeContainerHeading").style.display=""
+    document.getElementById("active").style.display=""
+    document.getElementById("completedContainerHeading").style.display=""
+    document.getElementById("completed").style.display=""
     createTask();
     createCompleteTask();
 }
@@ -87,7 +90,7 @@ function readData() {
     else {
     var todo = {
         arraytitle: title,
-        desc: description,
+        description: description,
         date: dueDate,
         status: "active"
     }
@@ -105,7 +108,7 @@ function searchByTitle() {
     searchText = document.getElementById("searchText").value;
 
     var found = activeArray.findIndex(function(obj , index) {
-        if(obj.arraytitle == searchText)
+        if(obj.arraytitle.toLowerCase() === searchText.toLowerCase())
             return true;
     });
     
@@ -129,8 +132,6 @@ function searchedItem() {
             document.getElementById("completed").innerHTML=""
             searchedCompleted();
         }
-        // document.getElementById("completed").innerHTML=""
-        // searchedCompleted();
     }
 }
 
@@ -164,7 +165,6 @@ function markedItem(indexOfcheckbox) {
     counting();
 
     var jsonArr = JSON.stringify(activeArray);
-    // save to localStorage
     localStorage.setItem("array", jsonArr);
 }
 
@@ -173,14 +173,12 @@ function btnValue(x) {
 }
 
 function deleteTask() {
-    //allCount.innerHTML--;
     activeArray.splice(value,1);
     createTask();
     createCompleteTask();
     counting();
 
     var jsonArr = JSON.stringify(activeArray);
-    // save to localStorage
     localStorage.setItem("array", jsonArr);
 }
 
@@ -189,7 +187,6 @@ function deleteCompleted() {
         if(activeArray[k].status == "complete") {
             activeArray.splice(k,1);
             k--;
-            //allCount.innerHTML--;
         }
     }
     createTask();
@@ -197,29 +194,30 @@ function deleteCompleted() {
     counting();
 
     var jsonArr = JSON.stringify(activeArray);
-    // save to localStorage
     localStorage.setItem("array", jsonArr);
 }
 
 function editTask(index) {
-
     indexForEdit = index;
     document.getElementById("modalTitle").value = activeArray[index].arraytitle;
-    document.getElementById("modalDescription").innerText = activeArray[index].desc;
+    document.getElementById("modalDescription").innerText = activeArray[index].description;
     document.getElementById("modalDate").value = activeArray[index].date;
 }
 
 function updateTask() {
-
+  if(!document.getElementById("modalTitle").value) {
+    alert("title cannot be null")
+  }
+  else { 
     activeArray[indexForEdit].arraytitle = document.getElementById("modalTitle").value;
-    activeArray[indexForEdit].desc = document.getElementById("modalDescription").innerText;
+    activeArray[indexForEdit].description = document.getElementById("modalDescription").innerText;
     activeArray[indexForEdit].date = document.getElementById("modalDate").value;
     sortedArray = sortByTitle(activeArray , 'arraytitle');
     createTask();
 
     var jsonArr = JSON.stringify(activeArray);
-    // save to localStorage
     localStorage.setItem("array", jsonArr);
+  }
 }
 
 function sortByTitle (array , key) {
@@ -253,16 +251,16 @@ function active() {
         document.getElementById("active").innerHTML +=
         `<div id="tasks">
           <div class="task-item">
-            <div class="items">
+            <div class="d-flex align-self-center gap-3">
               <div class="round">
                 <input class = "form-check-input rounded-circle" type = "checkbox" id="${i}" onclick = "markedItem(this.id)"/>
               </div>
               <div class="content">
-                <div class="titleBox">
-                  <a class="titleOfTask text-decoration-none text-black" id="titleOfTask">${activeArray[i].arraytitle}</a>
+                <div class="d-flex align-items-center gap-2">
+                  <a class="titleOfTask text-decoration-none text-black text18" id="titleOfTask">${activeArray[i].arraytitle}</a>
                   <div class="status"></div>
                 </div>
-                <div class="dateAndTime" id="dateAndTime">by ${activeArray[i].date}</div>
+                <div class="dateAndTime" id="dateAndTime"><img src="/images/calender.png" alt="" class="me-2"> by ${activeArray[i].date}</div>
               </div>
             </div>
             <div class="operations d-flex align-self-center gap-4 me-4">
@@ -284,11 +282,11 @@ function completed() {
                 <input class = "form-check-input rounded-circle" type = "checkbox" checked id="${i}" onclick = "markedItem(this.id)"/>
               </div>
               <div class="content">
-                <div class="titleBox">
-                  <a class="titleOfTask text-decoration-none text-black" id="titleOfTask">${activeArray[i].arraytitle}</a>
+                <div class="d-flex align-items-center gap-2">
+                  <a class="titleOfTask text-decoration-none text-black text18" id="titleOfTask">${activeArray[i].arraytitle}</a>
                   <div class="status bg-success"></div>
                 </div>
-                <div class="dateAndTime" id="dateAndTime">by ${activeArray[i].date}</div>
+                <div class="dateAndTime" id="dateAndTime"><img src="/images/calender.png" alt="" class="me-2"> by ${activeArray[i].date}</div>
               </div>
             </div>
             <div class="operations d-flex align-self-center gap-4 me-4">
@@ -310,11 +308,11 @@ function searchedActive() {
                 <input class = "form-check-input rounded-circle" type = "checkbox" id="${foundIndex}" onclick = "markedItem(this.id)"/>
               </div>
               <div class="content">
-                <div class="titleBox">
-                  <a class="titleOfTask text-decoration-none text-black" id="titleOfTask">${activeArray[foundIndex].arraytitle}</a>
+                <div class="d-flex align-items-center gap-2">
+                  <a class="titleOfTask text-decoration-none text-black text18" id="titleOfTask">${activeArray[foundIndex].arraytitle}</a>
                   <div class="status"></div>
                 </div>
-                <div class="dateAndTime" id="dateAndTime">by ${activeArray[foundIndex].date}</div>
+                <div class="dateAndTime gap-1" id="dateAndTime"> <img src="/images/calender.png" alt=""> by ${activeArray[foundIndex].date}</div>
               </div>
             </div>
             <div class="operations d-flex align-self-center gap-4 me-4">
@@ -336,11 +334,11 @@ function searchedCompleted() {
                 <input class = "form-check-input rounded-circle" type = "checkbox" checked id="${foundIndex}" onclick = "markedItem(this.id)"/>
               </div>
               <div class="content">
-                <div class="titleBox">
-                  <a class="titleOfTask text-decoration-none text-black" id="titleOfTask">${activeArray[foundIndex].arraytitle}</a>
+                <div class="d-flex align-items-center gap-2">
+                  <a class="titleOfTask text-decoration-none text-black text18" id="titleOfTask">${activeArray[foundIndex].arraytitle}</a>
                   <div class="status bg-success"></div>
                 </div>
-                <div class="dateAndTime" id="dateAndTime">by ${activeArray[foundIndex].date}</div>
+                <div class="dateAndTime" id="dateAndTime"><img src="/images/calender.png" alt=""> by ${activeArray[foundIndex].date}</div>
               </div>
             </div>
             <div class="operations d-flex align-self-center gap-4 me-4">
@@ -353,10 +351,9 @@ function searchedCompleted() {
 }
 
 function counting() {
-    //console.log("success")
-    allCount.innerHTML = ""
-    activeCount.innerHTML = ""
-    completedCount.innerHTML = ""
+    allCount.innerHTML = "0"
+    activeCount.innerHTML = "0"
+    completedCount.innerHTML = "0"
     for(i=0; i<activeArray.length; i++) {
         allCount.innerHTML++;
         if(activeArray[i].status == 'active') {
@@ -366,4 +363,17 @@ function counting() {
             completedCount.innerHTML++;
         }
     }
+}
+
+function getDate() {
+  var todayDate = new Date();
+  let day = todayDate.getDate();
+  let month = todayDate.getMonth()+1;
+  let year = todayDate.getFullYear();
+  
+  let montharray = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  let currentMonth = montharray[month]
+  currentDate = `${day}-${currentMonth}-${year}`
+  document.getElementById("theDate").value = currentDate
+  console.log(currentDate);
 }
