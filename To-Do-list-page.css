@@ -18,11 +18,6 @@ body {
     font-size: 14px;
 }
 
-.List {
-    border-bottom-style: solid;
-    border-color: #0C39C7 !important;
-}
-
 .form-select {
     padding:7px;
     background-color: rgba(163, 163, 163, 0.1);
@@ -108,7 +103,7 @@ body {
 
 .bi-pencil{
   color: #7E7E7F;
-
+  
 }
 
 .bi-trash {
