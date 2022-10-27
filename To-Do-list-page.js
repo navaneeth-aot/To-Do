@@ -47,9 +47,9 @@ document.querySelector(".form-select").addEventListener("change", function() {
 //page load function
 function onload() {
     loadAll();
+    sortByTitle(activeArray , 'arraytitle');
     createTask();
     createCompleteTask();
-    sortByTitle(activeArray , 'arraytitle');
     counting();
 }
 //All Tasks menu
@@ -114,8 +114,8 @@ function searchByTitle() {
     document.getElementById("active").innerHTML=""
     document.getElementById("completed").innerHTML=""
     for(i = 0; i<filtered.length; i++) {
-      searchedActive();
-      searchedCompleted();
+      active(filtered[i]);
+      completed(filtered[i]);
     }
     filtered = []
 }
@@ -123,14 +123,14 @@ function searchByTitle() {
 function createTask() {
     document.getElementById("active").innerHTML=""
     for(i=0; i<activeArray.length; i++) {
-        active();
+        active(i);
     }
 }
 // creating complete tasks div
 function createCompleteTask() {
     document.getElementById("completed").innerHTML=""
     for(i=0; i<activeArray.length; i++){
-        completed();
+        completed(i);
     }
 }
 // changing the status of the todo tasks according to the checkbox actions
@@ -205,8 +205,8 @@ function updateTask() {
 function sortByTitle (array , key) {
     return array.sort(function(a, b)
     {
-    if (a.arraytitle.toLowerCase() < b.arraytitle.toLowerCase()) return false;
-    if (a.arraytitle.toLowerCase() > b.arraytitle.toLowerCase()) return true;
+    if (a.arraytitle.toLowerCase() < b.arraytitle.toLowerCase()) return -1;
+    if (a.arraytitle.toLowerCase() > b.arraytitle.toLowerCase()) return 1;
     return 0;
     }); 
 }
@@ -228,104 +228,53 @@ function clear() {
     thedate = "";
 }
 // displaying  active todos 
-function active() {
-    if(activeArray[i].status == "active") {
+function active(index) {
+    if(activeArray[index].status == "active") {
         document.getElementById("active").innerHTML +=
         `<div id="tasks">
           <div class="task-item">
             <div class="d-flex align-self-center gap-3">
               <div class="round">
-                <input class = "form-check-input rounded-circle" type = "checkbox" id="${i}" onclick = "markedItem(this.id)"/>
+                <input class = "form-check-input rounded-circle" type = "checkbox" id="${index}" onclick = "markedItem(this.id)"/>
               </div>
-              <div class="content">
+              <div class="content d-flex flex-column">
                 <div class="d-flex align-items-center gap-2">
-                  <a class="titleOfTask text-decoration-none text-black text18" id="titleOfTask">${activeArray[i].arraytitle}</a>
+                  <a class="titleOfTask text-decoration-none text-black text18" id="titleOfTask">${activeArray[index].arraytitle}</a>
                   <div class="status"></div>
                 </div>
-                <div class="dateAndTime p-1 rounded" id="dateAndTime"><img src="/images/calender.png" alt="" class="me-2"> by ${activeArray[i].date}</div>
+                <div class="dateAndTime p-1 rounded align-self-start" id="date${index}"><i class="bi bi-calendar4-week me-2"></i> by ${activeArray[index].date}</div>
               </div>
             </div>
             <div class="operations d-flex align-self-center gap-4 me-4">
-              <i class="bi bi-pencil" data-bs-toggle="modal" data-bs-target="#editModal" id="${i}" onclick = "editTask(this.id)"></i>
-              <i class="bi bi-trash" data-bs-toggle="modal" data-bs-target="#exampleModal" id="${i}" onclick = "btnValue(this.id)"></i>
+              <i class="bi bi-pencil" data-bs-toggle="modal" data-bs-target="#editModal"  onclick = "editTask(${index})"></i>
+              <i class="bi bi-trash" data-bs-toggle="modal" data-bs-target="#exampleModal"  onclick = "btnValue(${index})"></i>
             </div>
           </div>
         </div>`
+        getDate(index)
     }
 }
 // displaying completed todo 
-function completed() {
-    if(activeArray[i].status == "complete") {
+function completed(index) {
+    if(activeArray[index].status == "complete") {
         document.getElementById("completed").innerHTML +=
         `<div id="tasks">
           <div class="task-item">
             <div class="items">
               <div class="round">
-                <input class = "form-check-input rounded-circle" type = "checkbox" checked id="${i}" onclick = "markedItem(this.id)"/>
+                <input class = "form-check-input rounded-circle" type = "checkbox" checked id="${index}" onclick = "markedItem(this.id)"/>
               </div>
               <div class="content">
                 <div class="d-flex align-items-center gap-2">
-                  <a class="titleOfTask text-decoration-none text-black text18" id="titleOfTask">${activeArray[i].arraytitle}</a>
+                  <a class="titleOfTask text-decoration-none text-black text18" id="titleOfTask">${activeArray[index].arraytitle}</a>
                   <div class="status bg-success"></div>
                 </div>
-                <div class="dateAndTime" id="dateAndTime"><img src="/images/calender.png" alt="" class="me-2"> by ${activeArray[i].date}</div>
+                <div class="dateAndTime" id="dateAndTime"><i class="bi bi-calendar4-week me-2"></i> by ${activeArray[index].date}</div>
               </div>
             </div>
             <div class="operations d-flex align-self-center gap-4 me-4">
-              <i class="bi bi-pencil" data-bs-toggle="modal" data-bs-target="#editModal" id="${i}" onclick = "editTask(this.id)"></i>
-              <i class="bi bi-trash" data-bs-toggle="modal" data-bs-target="#exampleModal" id="${i}" onclick = "btnValue(this.id)"></i>
-            </div>
-          </div>
-        </div>`
-    }
-}
-// displaying todo if searched todo is in active
-function searchedActive() {
-    if(activeArray[filtered[i]].status == "active") {
-        document.getElementById("active").innerHTML +=
-        `<div id="tasks">
-          <div class="task-item">
-            <div class="items">
-              <div class="round">
-                <input class = "form-check-input rounded-circle" type = "checkbox" id="${filtered[i]}" onclick = "markedItem(this.id)"/>
-              </div>
-              <div class="content">
-                <div class="d-flex align-items-center gap-2">
-                  <a class="titleOfTask text-decoration-none text-black text18" id="titleOfTask">${activeArray[filtered[i]].arraytitle}</a>
-                  <div class="status"></div>
-                </div>
-                <div class="dateAndTime gap-1" id="dateAndTime"> <img src="/images/calender.png" alt=""> by ${activeArray[filtered[i]].date}</div>
-              </div>
-            </div>
-            <div class="operations d-flex align-self-center gap-4 me-4">
-              <i class="bi bi-pencil" data-bs-toggle="modal" data-bs-target="#editModal" id="${filtered[i]}" onclick = "editTask(this.id)"></i>
-              <i class="bi bi-trash" data-bs-toggle="modal" data-bs-target="#exampleModal" id="${filtered[i]}" onclick = "btnValue(this.id)"></i>
-            </div>
-          </div>
-        </div>`
-    }
-}
-// displaying todo if searched todo is in complete
-function searchedCompleted() {
-    if(activeArray[filtered[i]].status == "complete") {
-        document.getElementById("completed").innerHTML +=
-        `<div id="tasks">
-          <div class="task-item">
-            <div class="items">
-              <div class="round">
-                <input class = "form-check-input rounded-circle" type = "checkbox" checked id="${filtered[i]}" onclick = "markedItem(this.id)"/>
-              </div>
-              <div class="content">
-                <div class="d-flex align-items-center gap-2">
-                  <a class="titleOfTask text-decoration-none text-black text18" id="titleOfTask">${activeArray[filtered[i]].arraytitle}</a>
-                  <div class="status"></div>
-                </div>
-                <div class="dateAndTime gap-1" id="dateAndTime"> <img src="/images/calender.png" alt=""> by ${activeArray[filtered[i]].date}</div>
-              </div>
-            </div>
-            <div class="operations d-flex align-self-center gap-4 me-4">
-              <i class="bi bi-pencil" data-bs-toggle="modal" data-bs-target="#editModal" id="${filtered[i]}" onclick = "editTask(this.id)"></i>
-              <i class="bi bi-trash" data-bs-toggle="modal" data-bs-target="#exampleModal" id="${filtered[i]}" onclick = "btnValue(this.id)"></i>
+              <i class="bi bi-pencil" data-bs-toggle="modal" data-bs-target="#editModal" onclick = "editTask(${index})"></i>
+              <i class="bi bi-trash" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick = "btnValue(${index})"></i>
             </div>
           </div>
         </div>`
@@ -347,12 +296,13 @@ function counting() {
     }
 }
 // todays date
-// function getDate() {
-//   var todayDate = new Date();
-//   let day = todayDate.getDate();
-//   let month = todayDate.getMonth();
-//   let year = todayDate.getFullYear();
-//   currentDate = `${day}-${month}-${year}`
-//   document.getElementById("theDate").value = currentDate
-//   console.log(currentDate);;
-// }
+function getDate(index) {
+    let currentDate = new Date();
+    let todoDAte = new Date(activeArray[index].date);
+    if(currentDate > todoDAte)
+    { 
+      document.getElementById(`date${index}`).style.color = " #C03503";
+      document.getElementById(`date${index}`).style.backgroundColor = "rgba(192, 53, 3, 0.06)";
+    }
+    
+}
