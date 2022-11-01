@@ -22,7 +22,6 @@ let str = localStorage.getItem("array");
 let activeArray = JSON.parse(str) || [];
 
 onload();
-//getDate();
 
 // addbutton click Event
 addButton.addEventListener("click",() => {
